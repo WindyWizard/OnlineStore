@@ -1,0 +1,6 @@
+CREATE TABLE images (
+	id BIGSERIAL PRIMARY KEY,
+	link TEXT NOT NULL,
+	productId INT NOT NULL,
+	FOREIGN KEY (productId) REFERENCES products(id)
+)

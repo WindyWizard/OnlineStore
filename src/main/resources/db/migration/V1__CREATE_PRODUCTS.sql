@@ -1,0 +1,9 @@
+CREATE TABLE products (
+	id BIGSERIAL PRIMARY KEY,
+	name VARCHAR(255) NOT NULL UNIQUE,
+	description TEXT NOT NULL,
+	price INT NOT NULL,
+	in_stock INT NOT NULL,
+	category VARCHAR(255) NOT NULL,
+	evaluation NUMERIC NOT NULL
+)
