@@ -6,7 +6,10 @@ import com.myproject.onlinestore.entity.bankcard.BankcardEntity;
 import com.myproject.onlinestore.exception.bankcard.BankcardNotFoundException;
 import com.myproject.onlinestore.exception.bankcard.BankcardNotCreatedException;
 import com.myproject.onlinestore.exception.bankcard.BankcardNotDeletedException;
+import com.myproject.onlinestore.exception.customer.CustomerNotFoundException;
 import com.myproject.onlinestore.model.bankcard.Bankcard;
+import com.myproject.onlinestore.entity.customer.CustomerEntity;
+import com.myproject.onlinestore.service.customer.CustomerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +38,9 @@ public class BankcardController {
 	public List<Bankcard> getBankcards(Principal principal, HttpServletResponse response) throws IOException {
 		try {
 			return bankcardService.getBankcards(
-				customerService.getCustomer(principal.getName()));
-		} catch (BankcardNotFoundException e) {
+				CustomerEntity.getEntity(
+					customerService.getCustomer(principal.getName())));
+		} catch (BankcardNotFoundException | CustomerNotFoundException e) {
 			response.sendError(400);
 			return null;
 		}
@@ -44,26 +48,25 @@ public class BankcardController {
 
 	@PreAuthorize("hasAuthority('STANDART_PERMISSION')")
 	@PostMapping("/bankcard/add")
-	public ResponseEntity addBankcard(@RequestBody Bankcard bankcard, Principal principal) {
+	public ResponseEntity addBankcard(@RequestBody BankcardEntity bankcard, Principal principal) {
 		try {
 			bankcard.setCustomer(
-				customerService.getCustomer(principal.getName()));
+				CustomerEntity.getEntity(
+					customerService.getCustomer(principal.getName())));
 			bankcardService.addBankcard(bankcard);
 			return ResponseEntity.ok("Bankcard added successfully!"); 
-		} catch (CustomerNotEditedException e) {
+		} catch (BankcardNotCreatedException | CustomerNotFoundException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 
 	@PreAuthorize("hasAuthority('STANDART_PERMISSION')")
-	@PostMapping("/bankcard/add")
-	public ResponseEntity deleteBankcard(@RequestBody Bankcard bankcard, Principal principal) {
+	@PostMapping("/bankcard/delete")
+	public ResponseEntity deleteBankcard(@RequestBody BankcardEntity bankcard, Principal principal) {
 		try {
-			bankcard.setCustomer(
-				customerService.getCustomer(principal.getName()));
 			bankcardService.deleteBankcard(bankcard);
-			return ResponseEntity.ok("Bankcard added successfully!"); 
-		} catch (CustomerNotEditedException e) {
+			return ResponseEntity.ok("Bankcard deleted successfully!"); 
+		} catch (BankcardNotDeletedException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}

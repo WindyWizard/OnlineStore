@@ -2,6 +2,7 @@ package com.myproject.onlinestore.entity.customer;
 
 import lombok.*;
 import javax.persistence.*;
+import com.myproject.onlinestore.model.customer.Customer;
 
 @Entity
 @Data
@@ -20,4 +21,14 @@ public class CustomerEntity {
 
 	@Column(name = "email")
 	private String email;
+
+	public static CustomerEntity getEntity(Customer customer) {
+		CustomerEntity customerEntity = new CustomerEntity();
+
+		customerEntity.setName(customer.getName());
+		customerEntity.setPhone(customer.getPhone());
+		customerEntity.setEmail(customer.getEmail());
+
+		return customerEntity;
+	}
 }

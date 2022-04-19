@@ -3,6 +3,7 @@ package com.myproject.onlinestore.service.customer;
 import com.myproject.onlinestore.repository.customer.CustomerRepository;
 import com.myproject.onlinestore.repository.user.UserRepository;
 import com.myproject.onlinestore.entity.customer.CustomerEntity;
+import com.myproject.onlinestore.model.customer.Customer;
 import com.myproject.onlinestore.entity.user.UserEntity;
 import com.myproject.onlinestore.exception.customer.CustomerNotFoundException;
 import com.myproject.onlinestore.exception.customer.CustomerNotEditedException;
@@ -27,9 +28,9 @@ public class CustomerService {
 		this.userRepository = userRepository;
 	}
 
-	public CustomerEntity getCustomer(String phone) throws CustomerNotFoundException {
+	public Customer getCustomer(String phone) throws CustomerNotFoundException {
 		try {
-			return customerRepository.findByPhone(phone);
+			return Customer.getModel(customerRepository.findByPhone(phone));
 		} catch (Exception e) {
 			throw new CustomerNotFoundException(String.format("Customer not found. Cause: %s", 
 				e.toString()));	

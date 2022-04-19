@@ -2,6 +2,7 @@ package com.myproject.onlinestore.controller.customer;
 
 import com.myproject.onlinestore.service.customer.CustomerService;
 import com.myproject.onlinestore.entity.customer.CustomerEntity;
+import com.myproject.onlinestore.model.customer.Customer;
 import com.myproject.onlinestore.entity.user.UserEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class CustomerController {
 
 	@PreAuthorize("hasAuthority('STANDART_PERMISSION')")
 	@GetMapping("/customer/info")
-	public CustomerEntity getCustomer(Principal principal, HttpServletResponse response) throws IOException {
+	public Customer getCustomer(Principal principal, HttpServletResponse response) throws IOException {
 		try {
 			return customerService.getCustomer(principal.getName());
 		} catch (CustomerNotFoundException e) {

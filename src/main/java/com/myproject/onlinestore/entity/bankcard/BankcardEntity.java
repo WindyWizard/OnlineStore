@@ -16,7 +16,7 @@ public class BankcardEntity {
 	@Column(name = "bankcard_number")
 	private String bankcardNumber;
 
-	@OneToOne(optional = true, cascade = CascadeType.ALL)
-	@JoinColumn(name = "customerId")
+	@OneToOne(optional = false)
+	@JoinColumn(name = "customer_id")
 	private CustomerEntity customer;
 }
