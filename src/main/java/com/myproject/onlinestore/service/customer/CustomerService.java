@@ -14,7 +14,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import com.myproject.onlinestore.service.security.SecurityService;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CustomerService {
@@ -37,7 +36,6 @@ public class CustomerService {
 		}
 	}
 
-	@Transactional
 	public void editCustomer(String phone, CustomerEntity fromRequest, UserEntity user) throws CustomerNotEditedException {
 		try {
 			String newPhone = fromRequest.getPhone();
