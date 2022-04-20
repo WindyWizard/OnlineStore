@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.security.Principal;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -37,11 +38,8 @@ public class FavouriteGoodController {
 	@GetMapping("/favourites/info")
 	public List<FavouriteGood> getFavouriteGoods(Principal principal, HttpServletResponse response) throws IOException {
 		try {
-			return favouriteGoodService.getFavouriteGoods(
-				CustomerEntity.getEntity(
-					customerService.getCustomer(principal.getName())));
-		} catch (FavouriteGoodNotFoundException | CustomerNotFoundException e) {
-			response.sendError(400);
+			return favouriteGoodService.getFavouriteGoods(principal.getName());
+		} catch (FavouriteGoodNotFoundException e) {
 			return null;
 		}
 	}
@@ -57,6 +55,7 @@ public class FavouriteGoodController {
 		}
 	}
 
+	@Transactional
 	@PreAuthorize("hasAuthority('STANDART_PERMISSION')")
 	@PostMapping("/favourites/delete/{product}")
 	public ResponseEntity deleteFavouriteGood(@PathVariable("product") String product, Principal principal) {

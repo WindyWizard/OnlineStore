@@ -18,7 +18,6 @@ public class FavouriteGoodEntity {
 	@JoinColumn(name = "product_id")
 	private ProductEntity product;
 
-	@OneToOne(optional = false)
-	@JoinColumn(name = "customer_id")
-	private CustomerEntity customer;
+	@Column(name = "customer_phone")
+	private String customerPhone;
 }

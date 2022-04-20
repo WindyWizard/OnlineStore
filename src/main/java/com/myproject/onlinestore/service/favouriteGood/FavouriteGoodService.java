@@ -33,11 +33,11 @@ public class FavouriteGoodService {
 		this.customerRepository = customerRepository;
 	}
 
-	public List<FavouriteGood> getFavouriteGoods(CustomerEntity customer) throws FavouriteGoodNotFoundException {
+	public List<FavouriteGood> getFavouriteGoods(String customerPhone) throws FavouriteGoodNotFoundException {
 		try {
 			List<FavouriteGoodEntity> entities = new ArrayList<>();
 
-			(favouriteGoodRepository.findAllByCustomer(customer))
+			(favouriteGoodRepository.findAllByCustomerPhone(customerPhone))
 				.forEach(product -> entities.add(product));
 
 			List<FavouriteGood> models = new ArrayList<>();
@@ -54,7 +54,7 @@ public class FavouriteGoodService {
 	public void addFavouriteGood(String customer, String product) throws FavouriteGoodNotCreatedException {
 		try {
 			FavouriteGoodEntity entity = new FavouriteGoodEntity();
-			entity.setCustomer(customerRepository.findByName(customer));
+			entity.setCustomerPhone(customerRepository.findByPhone(customer).getPhone());
 			entity.setProduct(productRepository.findByName(product));
 
 			favouriteGoodRepository.save(entity);
@@ -65,17 +65,16 @@ public class FavouriteGoodService {
 	}
 
 	@Transactional
-	public void deleteFavouriteGood(String product, String customer) throws FavouriteGoodNotDeletedException {
+	public void deleteFavouriteGood(String product, String customerPhone) throws FavouriteGoodNotDeletedException {
 		try {
 			List<FavouriteGoodEntity> entities = new ArrayList<>();
 
-			(favouriteGoodRepository.findAllByCustomer(
-				customerRepository.findByName(customer)))
+			(favouriteGoodRepository.findAllByCustomerPhone(customerPhone))
 				.forEach(entity -> entities.add(entity));
 
 			for (FavouriteGoodEntity entity : entities) {
 				if (entity.getProduct().getName().equals(product)) {
-					favouriteGoodRepository.deleteById(entity.getProduct().getId());
+					favouriteGoodRepository.deleteByProduct(entity.getProduct());
 				}
 			}
 		} catch (Exception e) {
