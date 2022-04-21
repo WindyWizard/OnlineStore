@@ -1,7 +1,6 @@
 CREATE TABLE carts (
 	id BIGSERIAL PRIMARY KEY,
-	productId INT NOT NULL,
-	customerId INT NOT NULL,
-	FOREIGN KEY (productId) REFERENCES products(id),
-	FOREIGN KEY (customerId) REFERENCES customers(id)
+	product_id INT,
+	customer_phone VARCHAR(255) NOT NULL,
+	FOREIGN KEY (product_id) REFERENCES products(id)
 )
